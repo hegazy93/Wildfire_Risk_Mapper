@@ -1,0 +1,56 @@
+---
+title: "MetOffice DataPoint Parser"
+author: "Abdelrahman Ibrahim"
+date: "2023-11-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load packages 
+
+```{r, include=TRUE}
+require(httr)
+require(jsonlite)
+require(sf)
+require(tidyverse)
+require(purrr)
+```
+
+## Get data
+API key: c464dd77-dd2c-4dc1-8d6a-3f987c2d6a10
+Get the hourly observation data:
+```{r , include=TRUE}
+measures = GET(r"(http://environment.data.gov.uk/flood-monitoring/id/measures)")
+measures
+```
+
+
+```{r , include=TRUE}
+rainfall = GET(r"(http://environment.data.gov.uk/flood-monitoring/data/readings?parameter=rainfall.json)")
+rainfall
+```
+
+rainfall_df <- as.data.frame(fromJSON(rawToChar(rainfall$content)))
+rainfall_df
+
+```
+## Append the observation database
+
+```{r , include=TRUE}
+obs_hist <- read.csv((r"(2_processed_data\metoffice_weather_obs.csv)"))
+obs <- rbind(obs_hist, obs_df)
+obs <-  unique(obs)
+
+write.table(obs, (r"(2_processed_data\metoffice_weather_obs.csv)"), sep = ",", row.names = FALSE)
+```
+
+
+```
+## Create a surface of daily average observations using IDW interpolation
+
+```{r , include=TRUE}
+```
+

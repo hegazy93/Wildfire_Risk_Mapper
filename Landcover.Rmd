@@ -1,0 +1,47 @@
+---
+title: "Landcover"
+author: "Abdelrahman Ibrahim"
+date: "2023-11-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r, include=TRUE}
+require(terra)
+require(sf)
+require(tidyverse)
+require(geojsonsf)
+```
+
+```{r , include=TRUE}
+mm_bound <- geojson_sf(r"(1_raw_data\boundaries\National_Trust_Open_Data _Land_-_Always_Open.geojson)") %>%
+  st_transform(mm_bound, crs = 27700)
+plot(mm_bound)
+```
+
+```{r , include=TRUE}
+landcover <- rast(r"(1_raw_data\landcover\landcover_25m_grid\data\LCM.tif)")[[1]] #load the first band of the raster
+plot(landcover)
+```
+```{r , include=TRUE}
+landcover <- terra::crop(landcover, mm_bound, mask = TRUE)
+plot(landcover)
+```
+
+```{r , include=TRUE}
+landcover_sf <- as.polygons(landcover, dissolve=FALSE) #set dissolve to FALSE to keep all pixels as separate polygons
+landcover_sf <- st_as_sf(landcover_sf)
+head(landcover_sf)
+```
+
+```{r , include=TRUE}
+```
