@@ -22,20 +22,21 @@ require(purrr)
 ## Get data
 API key: c464dd77-dd2c-4dc1-8d6a-3f987c2d6a10
 Get the hourly observation data:
+
 ```{r , include=TRUE}
 obs = GET("http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/all?res=hourly&key=c464dd77-dd2c-4dc1-8d6a-3f987c2d6a10")
 obs_df <- as.data.frame(fromJSON(rawToChar(obs$content))$SiteRep$DV$Location)%>%
   unnest(cols = c(Period)) %>%
   unnest(cols = c(Rep)) %>%
   mutate(value=as.Date(value, format = "%Y-%m-%d"))
-names(obs_df)[20] <- "t_midnight"
+names(obs_df)[20] <- "t_midnight" #rename the column named $
 obs_df
-
 ```
 ## Append the observation database
 
 ```{r , include=TRUE}
 obs_hist <- read.csv((r"(2_processed_data\metoffice_weather_obs.csv)"))
+obs_hist$value <- as.Date(obs_hist$value,format="%Y-%m-%d")
 obs <- rbind(obs_hist, obs_df)
 obs <-  unique(obs)
 
@@ -43,7 +44,6 @@ write.table(obs, (r"(2_processed_data\metoffice_weather_obs.csv)"), sep = ",", r
 ```
 
 
-```
 ## Create a surface of daily average observations using IDW interpolation
 
 ```{r , include=TRUE}

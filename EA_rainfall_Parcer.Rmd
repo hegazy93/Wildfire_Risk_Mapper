@@ -20,37 +20,47 @@ require(purrr)
 ```
 
 ## Get data
-API key: c464dd77-dd2c-4dc1-8d6a-3f987c2d6a10
-Get the hourly observation data:
+
+measurement stations: 
+
 ```{r , include=TRUE}
-measures = GET(r"(http://environment.data.gov.uk/flood-monitoring/id/measures)")
-measures
+stations <- readr::read_csv("http://environment.data.gov.uk/flood-monitoring/id/stations.csv", show_col_types = FALSE) %>% 
+  filter(parameter == "rainfall")%>%
+  filter(stationReference != 'Not_Specified') %>%
+  select(stationReference, lat, long)
+head(stations)
 ```
 
+Get the hourly observation data:
 
 ```{r , include=TRUE}
-rainfall = GET(r"(http://environment.data.gov.uk/flood-monitoring/data/readings?parameter=rainfall.json)")
+list_of_files <- list.files(path = r"(1_raw_data\Climate Data\EA_rainfall_archive)",
+                            recursive = TRUE,
+                            pattern = "\\.csv$",
+                            full.names = TRUE)
+
+rainfall <- readr::read_csv(list_of_files, col_types = cols(stationReference = col_character(), date = col_date(), value =col_double())) %>% 
+  filter(parameter == "rainfall") %>%
+  filter(stationReference != 'Not_Specified') %>%
+  select(dateTime, date, stationReference, value) %>%
+  group_by(date, stationReference) %>%
+  summarise(daily_rainfall = sum(value)) %>%
+  full_join(stations, 
+           by = c("stationReference")) %>%
+  drop_na()
+
 rainfall
 ```
 
-rainfall_df <- as.data.frame(fromJSON(rawToChar(rainfall$content)))
-rainfall_df
-
-```
-## Append the observation database
+## Append the daily rainfall database
 
 ```{r , include=TRUE}
-obs_hist <- read.csv((r"(2_processed_data\metoffice_weather_obs.csv)"))
-obs <- rbind(obs_hist, obs_df)
-obs <-  unique(obs)
-
-write.table(obs, (r"(2_processed_data\metoffice_weather_obs.csv)"), sep = ",", row.names = FALSE)
+write.table(rainfall, (r"(2_processed_data\ea_daily_rainfall.csv)"), sep = ",", row.names = FALSE)
 ```
 
-
-```
 ## Create a surface of daily average observations using IDW interpolation
 
 ```{r , include=TRUE}
+
 ```
 

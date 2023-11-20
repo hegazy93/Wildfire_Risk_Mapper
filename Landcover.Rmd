@@ -29,19 +29,18 @@ plot(mm_bound)
 ```
 
 ```{r , include=TRUE}
-landcover <- rast(r"(1_raw_data\landcover\landcover_25m_grid\data\LCM.tif)")[[1]] #load the first band of the raster
-plot(landcover)
-```
-```{r , include=TRUE}
-landcover <- terra::crop(landcover, mm_bound, mask = TRUE)
-plot(landcover)
+landcover <- rast(r"(1_raw_data\landcover\landcover_25m_grid\data\LCM.tif)")[[1]] %>%
+  terra::crop(mm_bound, mask = FALSE) #load the first band of the raster
+plot(landcover, )
 ```
 
 ```{r , include=TRUE}
-landcover_sf <- as.polygons(landcover, dissolve=FALSE) #set dissolve to FALSE to keep all pixels as separate polygons
-landcover_sf <- st_as_sf(landcover_sf)
+landcover <- as.polygons(landcover, dissolve=FALSE) #set dissolve to FALSE to keep all pixels as separate polygons
+landcover <- st_as_sf(landcover)
+landcover_sf <- cbind(ID = 1:nrow(landcover), landcover)
 head(landcover_sf)
 ```
 
 ```{r , include=TRUE}
+st_write(landcover_sf, r"(2_processed_data\landcover_MRSDNM.geojson)")
 ```
