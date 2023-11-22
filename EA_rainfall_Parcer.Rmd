@@ -33,9 +33,10 @@ head(stations)
 
 Get the rainfall data:
 
-```{r , include=TRUE}
-#Initial call - Do Not Run
-base_url <- 'https://environment.data.gov.uk/flood-monitoring/archive/readings-full-'
+```{r , include=FALSE }
+#Initial call - Remove if(FALSE){} to run
+
+if(FALSE){base_url <- 'https://environment.data.gov.uk/flood-monitoring/archive/readings-full-'
 range <- seq(as.Date("2023/09/01"), as.Date("2023/11/19"), by = "days")
 out_url <- apply(expand.grid(base_url, range, ".csv"), 1, paste, collapse = '')
 
@@ -47,14 +48,14 @@ rainfall <- readr::read_csv(out_url, col_select = c("stationReference","paramete
   full_join(stations, by = c("stationReference")) %>%
   drop_na()
 
-head(rainfall)
+head(rainfall)}
 ```
 
 
 ```{r , include=TRUE}
 #Append rainfall data to the database
 base_url <- 'https://environment.data.gov.uk/flood-monitoring/archive/readings-full-'
-range <- seq(as.Date("2023/09/20"), as.Date("2023/11/23"), by = "days")
+range <- seq(as.Date("2023/11/20"), as.Date("2023/11/20"), by = "days")
 out_url <- apply(expand.grid(base_url, range, ".csv"), 1, paste, collapse = '')
 
 rainfall <- readr::read_csv(out_url, col_select = c("stationReference","parameter", "value","date"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double())) %>%
