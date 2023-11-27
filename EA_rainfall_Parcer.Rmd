@@ -37,10 +37,10 @@ Get the rainfall data:
 #Initial call - Remove if(FALSE){} to run
 
 if(FALSE){base_url <- 'https://environment.data.gov.uk/flood-monitoring/archive/readings-full-'
-range <- seq(as.Date("2023/09/01"), as.Date("2023/11/19"), by = "days")
+range <- seq(as.Date("2023/08/19"), as.Date("2023/11/22"), by = "days")
 out_url <- apply(expand.grid(base_url, range, ".csv"), 1, paste, collapse = '')
 
-rainfall <- readr::read_csv(out_url, col_select = c("stationReference","parameter", "value","date"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double())) %>%
+rainfall_df <- readr::read_csv(out_url, col_select = c("stationReference","parameter", "value","date"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double())) %>%
   filter(parameter == "rainfall") %>%
   filter(stationReference != 'Not_Specified') %>%
   group_by(date, stationReference) %>%
@@ -48,17 +48,18 @@ rainfall <- readr::read_csv(out_url, col_select = c("stationReference","paramete
   full_join(stations, by = c("stationReference")) %>%
   drop_na()
 
-head(rainfall)}
+head(rainfall_df)}
+
 ```
 
 
 ```{r , include=TRUE}
 #Append rainfall data to the database
 base_url <- 'https://environment.data.gov.uk/flood-monitoring/archive/readings-full-'
-range <- seq(as.Date("2023/11/20"), as.Date("2023/11/20"), by = "days")
+range <- seq(as.Date("2023/11/23"), as.Date("2023/11/25"), by = "days")
 out_url <- apply(expand.grid(base_url, range, ".csv"), 1, paste, collapse = '')
 
-rainfall <- readr::read_csv(out_url, col_select = c("stationReference","parameter", "value","date"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double())) %>%
+rainfall_df <- readr::read_csv(out_url, col_select = c("stationReference","parameter", "value","date"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double())) %>%
   filter(parameter == "rainfall") %>%
   filter(stationReference != 'Not_Specified') %>%
   group_by(date, stationReference) %>%
@@ -66,7 +67,7 @@ rainfall <- readr::read_csv(out_url, col_select = c("stationReference","paramete
   full_join(stations, by = c("stationReference")) %>%
   drop_na()
 
-head(rainfall)
+head(rainfall_df)
 ```
 
 
@@ -74,16 +75,79 @@ head(rainfall)
 
 ```{r , include=TRUE}
 
-rainfall_hist <- read.csv((r"(2_processed_data\ea_daily_rainfall.csv)"))
-rainfall <- rbind(rainfall_hist, rainfall)
-rainfall <-  unique(rainfall)
+rainfall_hist <- readr::read_csv((r"(2_processed_data\ea_daily_rainfall.csv)"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double()))
+rainfall_df <- rbind(rainfall_hist, rainfall_df)
+rainfall_df <-  unique(rainfall_df)
+tail(rainfall_df)
 
-write.table(rainfall, (r"(2_processed_data\ea_daily_rainfall.csv)"), sep = ",", row.names = FALSE)
+write.table(rainfall_df, (r"(2_processed_data\ea_daily_rainfall.csv)"), sep = ",", row.names = FALSE)
+
 ```
 
-## Create a surface of daily average observations using IDW interpolation
+
+## Calculate Antecedent Rainfall Index for all days
 
 ```{r , include=TRUE}
-
+rainfall_list <- split(rainfall_df, as.factor(rainfall_df$stationReference))
+rainfall_list[[1]]
 ```
 
+
+``` {r}
+# Function to calculate Antecedent Participation Index (API) from a dataframe
+calculateAPI <- function(data, rainfall_column, n) {
+  
+  # Extract the precipitation vector from the dataframe
+  rainfall <- data[[rainfall_column]]
+  
+  # Initialize a vector to store API values
+  api <- numeric(length(rainfall))
+  
+  # Calculate API for each day
+  for (i in (n + 1):length(rainfall)) {
+    api[i] <- sum(rainfall[(i - n):(i - 1)]) / n
+  }
+  
+  
+  return(api)
+}
+
+# Function to apply calculateAPI to each dataframe in a list
+calculateAPIList <- function(df_list, rainfall_column, n) {
+  # Apply calculateAPI to each dataframe in the list
+  api_list <- lapply(df_list, function(df) {
+    calculateAPI(df, rainfall_column, n)
+  })
+  
+  # Add API values to each dataframe in the list
+  df_list_with_api <- lapply(seq_along(df_list), function(i) {
+    df <- df_list[[i]]
+    api <- api_list[[i]]
+    df$API <- c(rep(NA, n - 1), api)[1:nrow(df)] # Adjusted to ensure correct alignment 
+    df <- drop_na(df)
+    return(df)
+  })
+  
+  return(df_list_with_api)
+}
+
+
+# define function variables
+n <- 14
+df_list <- rainfall_list
+rainfall_column <- "daily_rainfall"
+
+# Apply calculateAPIList to the list of dataframes
+api <- calculateAPIList(df_list, rainfall_column, n)
+
+# Print the dataframes with API values
+api[[1]]
+
+```
+```{r}
+require(ggplot2)
+
+ggplot(api[[1]], aes(x = date, y = API)) +
+  geom_point(color = "blue", size = 3) +
+  labs(title = "Scatter Plot of x and y", x = "X-axis", y = "Y-axis")
+```
