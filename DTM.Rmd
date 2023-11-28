@@ -1,0 +1,73 @@
+---
+title: "DTM"
+author: "Abdelrahman Ibrahim"
+date: "2023-11-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load DTM Data
+
+```{r}
+require(terra)
+require(sf)
+
+# Load the GeoJSON file as a 'sf' (simple features) object
+landcover <- st_read(r"(2_processed_data\landcover_MRSDNM.geojson)")
+bbox <- st_bbox(landcover)
+bbox_sf <- st_bbox(bbox, crs = st_crs(landcover))
+
+# Read the first raster to initialize the raster object
+dtm_1m <- rast(r"(C:\2021_Hegazy\2_Work\1_LIDA\01_Wildfire Risk Project\1_raw_data\DTM\DTM_1m_merged.tif)")
+
+# Crop the merged raster with the boundary
+mm_dtm_1m <- crop(dtm_1m, bbox_sf)
+
+# Display the merged raster
+plot(mm_dtm_1m)
+
+# Export the merged raster
+writeRaster(mm_dtm_1m, (r"(2_processed_data\mm_dtm_1m.tif)"), overwrite = TRUE)
+```
+
+```{r}
+# Aggregate the raster to the target resolution (25m)
+mm_dtm_25m <- aggregate(mm_dtm_1m, fact = c(25,25))
+plot(mm_dtm_25m)
+par(mfrow=c(1,2))
+plot(mm_dtm_1m, main = "DTM 1 meter (Source)")
+plot(mm_dtm_25m, main = "DTM 25 meters (Resampled)")
+
+writeRaster(mm_dtm_25m, (r"(2_processed_data\mm_dtm_25m.tif)"), overwrite = TRUE)
+
+```
+```{r}
+
+# Calculate slope
+slope <- terrain(mm_dtm_25m, "slope")
+
+# Calculate aspect
+aspect <- terrain(mm_dtm_25m, "aspect")
+
+# Calculate drainage
+drainage <- terrain(mm_dtm_25m, "flowdir")
+
+# Optionally, you can plot the results
+par(mfrow=c(1,3))
+plot(slope, main = "Slope")
+plot(aspect, main = "Aspect")
+plot(drainage, main = "Drainage")
+
+# Save the results if needed
+writeRaster(slope, (r"(2_processed_data\mm_slope_25m.tif)"), overwrite = TRUE)
+writeRaster(aspect, (r"(2_processed_data\mm_aspect_25m.tif)"), overwrite = TRUE)
+writeRaster(drainage, (r"(2_processed_data\mm_drainage_25m.tif)"), overwrite = TRUE)
+
+```
+
+
+
+

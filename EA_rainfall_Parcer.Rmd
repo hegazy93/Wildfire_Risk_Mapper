@@ -88,7 +88,11 @@ write.table(rainfall_df, (r"(2_processed_data\ea_daily_rainfall.csv)"), sep = ",
 ## Calculate Antecedent Rainfall Index for all days
 
 ```{r , include=TRUE}
-rainfall_list <- split(rainfall_df, as.factor(rainfall_df$stationReference))
+rainfall_list <- split(rainfall_df, as.factor(rainfall_df$stationReference)) %>%
+  lapply(function(df) {
+  df[order(df$date), ]
+})
+
 rainfall_list[[1]]
 ```
 
@@ -108,7 +112,6 @@ calculateAPI <- function(data, rainfall_column, n) {
     api[i] <- sum(rainfall[(i - n):(i - 1)]) / n
   }
   
-  
   return(api)
 }
 
@@ -124,7 +127,8 @@ calculateAPIList <- function(df_list, rainfall_column, n) {
     df <- df_list[[i]]
     api <- api_list[[i]]
     df$API <- c(rep(NA, n - 1), api)[1:nrow(df)] # Adjusted to ensure correct alignment 
-    df <- drop_na(df)
+    df <- subset(df, date > as.Date("2023-08-31"))
+
     return(df)
   })
   
@@ -145,9 +149,66 @@ api[[1]]
 
 ```
 ```{r}
-require(ggplot2)
+api_daily <- bind_rows(api)
 
-ggplot(api[[1]], aes(x = date, y = API)) +
-  geom_point(color = "blue", size = 3) +
-  labs(title = "Scatter Plot of x and y", x = "X-axis", y = "Y-axis")
+# Convert the date column to a list index
+api_daily <- split(api_daily, f = api_daily$date)
+
+# Optionally, remove the date column from each dataframe in the list
+api_daily <- lapply(api_daily, function(df) df[, -1])
+names(api_daily)[40]
+```
+## Convert 
+```{r}
+df_to_sf <- function(df) {
+  # Assuming 'long' and 'lat' are the columns containing coordinates
+  sf_df <- st_as_sf(df, coords = c("long", "lat"), crs = 4326)
+  sf_df <- st_transform(sf_df, crs = 27700)
+  return(sf_df)
+}
+
+# Apply the function to each data frame in the list
+api_sf <- lapply(api_daily, df_to_sf)
+api_sf[40]
+
+```
+
+```{r}
+require(ggplot2)
+require(sf)
+require(gstat)
+require(sp)
+
+# Function to perform IDW interpolation
+idw_interpolation <- function(points_sf, polygon_sf, value_column) {
+  
+  # Create a spatial points data frame from the points sf
+  points_spdf <- as(points_sf, "Spatial")
+  
+  # Create a gstat object for IDW interpolation
+  idw_model <- gstat::idw(as.formula(paste(value_column, "~ 1")), points_spdf, polygon_sf)
+  
+  # Interpolate values to the polygon sf
+  interpolated_values <- predict(idw_model, newdata = polygon_sf)
+  
+  return(interpolated_values)
+}
+
+polygon_sf <- st_read(r"(2_processed_data\landcover_MRSDNM.geojson)")
+
+points_sf <- api_sf[[40]] %>%
+  drop_na() %>%
+  st_intersection(polygon_sf)
+
+# Specify the column containing values to be interpolated
+value_column <- "API"
+
+# Perform IDW interpolation
+interpolated_values <- idw_interpolation(points_sf, polygon_sf, value_column)
+
+# Add interpolated values to the polygon sf
+polygon_sf <- cbind(polygon_sf, interpolated_values)
+
+# Print the resulting sf object
+head(polygon_sf)
 ```
