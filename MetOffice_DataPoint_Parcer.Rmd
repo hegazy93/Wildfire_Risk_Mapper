@@ -32,6 +32,7 @@ obs_df <- as.data.frame(fromJSON(rawToChar(obs$content))$SiteRep$DV$Location)%>%
 names(obs_df)[20] <- "t_midnight" #rename the column named $
 obs_df
 ```
+
 ## Append the observation database
 
 ```{r , include=TRUE}

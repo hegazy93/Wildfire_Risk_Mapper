@@ -56,7 +56,7 @@ head(rainfall_df)}
 ```{r , include=TRUE}
 #Append rainfall data to the database
 base_url <- 'https://environment.data.gov.uk/flood-monitoring/archive/readings-full-'
-range <- seq(as.Date("2023/11/23"), as.Date("2023/11/25"), by = "days")
+range <- seq(as.Date("2023/11/26"), as.Date("2023/11/29"), by = "days")
 out_url <- apply(expand.grid(base_url, range, ".csv"), 1, paste, collapse = '')
 
 rainfall_df <- readr::read_csv(out_url, col_select = c("stationReference","parameter", "value","date"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double())) %>%
