@@ -127,7 +127,7 @@ calculateAPIList <- function(df_list, rainfall_column, n) {
     df <- df_list[[i]]
     api <- api_list[[i]]
     df$API <- c(rep(NA, n - 1), api)[1:nrow(df)] # Adjusted to ensure correct alignment 
-    df <- subset(df, date > as.Date("2023-08-31"))
+    df <- subset(df, date > as.Date("2023-08-31")) # only include readings from 01/09/2023
 
     return(df)
   })
@@ -136,7 +136,7 @@ calculateAPIList <- function(df_list, rainfall_column, n) {
 }
 
 
-# define function variables
+# calculate api for 14 antecedent days
 n <- 14
 df_list <- rainfall_list
 rainfall_column <- "daily_rainfall"
@@ -173,42 +173,3 @@ api_sf[40]
 
 ```
 
-```{r}
-require(ggplot2)
-require(sf)
-require(gstat)
-require(sp)
-
-# Function to perform IDW interpolation
-idw_interpolation <- function(points_sf, polygon_sf, value_column) {
-  
-  # Create a spatial points data frame from the points sf
-  points_spdf <- as(points_sf, "Spatial")
-  
-  # Create a gstat object for IDW interpolation
-  idw_model <- gstat::idw(as.formula(paste(value_column, "~ 1")), points_spdf, polygon_sf)
-  
-  # Interpolate values to the polygon sf
-  interpolated_values <- predict(idw_model, newdata = polygon_sf)
-  
-  return(interpolated_values)
-}
-
-polygon_sf <- st_read(r"(2_processed_data\landcover_MRSDNM.geojson)")
-
-points_sf <- api_sf[[40]] %>%
-  drop_na() %>%
-  st_intersection(polygon_sf)
-
-# Specify the column containing values to be interpolated
-value_column <- "API"
-
-# Perform IDW interpolation
-interpolated_values <- idw_interpolation(points_sf, polygon_sf, value_column)
-
-# Add interpolated values to the polygon sf
-polygon_sf <- cbind(polygon_sf, interpolated_values)
-
-# Print the resulting sf object
-head(polygon_sf)
-```

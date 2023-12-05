@@ -87,6 +87,7 @@ plot(aspect_resampled, main = "Aspect")
 plot(drainage_resampled, main = "Drainage")
 
 # Save the results
+writeRaster(mm_dtm_25m_resampled, (r"(2_processed_data\mm_dtm_25m_resampled.tif)"), overwrite = TRUE)
 writeRaster(slope_resampled, (r"(2_processed_data\mm_slope_25m_resampled.tif)"), overwrite = TRUE)
 writeRaster(aspect_resampled, (r"(2_processed_data\mm_aspect_25m_resampled.tif)"), overwrite = TRUE)
 writeRaster(drainage_resampled, (r"(2_processed_data\mm_drainage_25m_resampled.tif)"), overwrite = TRUE)
