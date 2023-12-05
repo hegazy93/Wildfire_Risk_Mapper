@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Load packages 
+# Load essintial packages 
 
 ```{r, include=TRUE}
 require(httr)
@@ -17,11 +17,12 @@ require(jsonlite)
 require(sf)
 require(tidyverse)
 require(purrr)
+
 ```
 
-## Get data
+# Build a database of daily rainfall amounts across all rainfall stations
 
-measurement stations: 
+## Get the names and locations of rainfall stations: 
 
 ```{r , include=TRUE}
 stations <- readr::read_csv("http://environment.data.gov.uk/flood-monitoring/id/stations.csv", show_col_types = FALSE) %>% 
@@ -31,7 +32,7 @@ stations <- readr::read_csv("http://environment.data.gov.uk/flood-monitoring/id/
 head(stations)
 ```
 
-Get the rainfall data:
+## Get the quarter hourly rainfall data for all stations and aggragate rainfall amounts per day:
 
 ```{r , include=FALSE }
 #Initial call - Remove if(FALSE){} to run
@@ -52,11 +53,11 @@ head(rainfall_df)}
 
 ```
 
+## Update the rainfall data to the most recent recording
 
 ```{r , include=TRUE}
-#Append rainfall data to the database
 base_url <- 'https://environment.data.gov.uk/flood-monitoring/archive/readings-full-'
-range <- seq(as.Date("2023/11/26"), as.Date("2023/11/29"), by = "days")
+range <- seq(as.Date("2023/12/03"), as.Date("2023/12/03"), by = "days")
 out_url <- apply(expand.grid(base_url, range, ".csv"), 1, paste, collapse = '')
 
 rainfall_df <- readr::read_csv(out_url, col_select = c("stationReference","parameter", "value","date"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double())) %>%
@@ -70,31 +71,143 @@ rainfall_df <- readr::read_csv(out_url, col_select = c("stationReference","param
 head(rainfall_df)
 ```
 
-
 ## Append the daily rainfall database
 
 ```{r , include=TRUE}
 
-rainfall_hist <- readr::read_csv((r"(2_processed_data\ea_daily_rainfall.csv)"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double()))
+rainfall_hist <- readr::read_csv((r"(2_processed_data\EA_daily_rainfall_stations.csv)"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double()))
 rainfall_df <- rbind(rainfall_hist, rainfall_df)
 rainfall_df <-  unique(rainfall_df)
 tail(rainfall_df)
 
-write.table(rainfall_df, (r"(2_processed_data\ea_daily_rainfall.csv)"), sep = ",", row.names = FALSE)
+write.table(rainfall_df, (r"(2_processed_data\EA_daily_rainfall_stations.csv)"), sep = ",", row.names = FALSE)
 
 ```
 
+## Create a list of dataframes for each date
 
-## Calculate Antecedent Rainfall Index for all days
 
 ```{r , include=TRUE}
-rainfall_list <- split(rainfall_df, as.factor(rainfall_df$stationReference)) %>%
-  lapply(function(df) {
-  df[order(df$date), ]
-})
-
+rainfall_list <- split(rainfall_df, f = rainfall_df$date)
 rainfall_list[[1]]
 ```
+
+# IDW Interpolation of daily rainfall value
+
+```{r}
+library(terra)
+library(gstat)
+library(tidyterra)
+library(sp)
+library(raster)
+library(tmap)
+```
+
+## Build and IDW interpolation model for one day
+```{r}
+# 1. read in land cover data to define an extent and a clip box grid
+gr = rast(r"(2_processed_data\landcover_MRSDNM.tif)", lyrs = 1)
+plot(gr)
+head(gr)
+```
+
+```{r}
+# now define a clip extent + 20km
+# and make a polygon to clip the data
+ex = ext(gr)
+fac = 20000
+xmin = ex[1] - fac
+xmax = ex[2] + fac
+ymin = ex[3] - fac
+ymax = ex[4] + fac
+# define a closed box
+my.box <- data.frame(
+  ID = c(rep("1",5)),
+  X = c(xmin, xmax, xmax, xmin, xmin),
+  Y = c(ymin, ymin, ymax, ymax, ymin))
+# my.poly
+# then make polygon 
+my.poly <- sfheaders::sf_polygon(
+  obj = my.box, x = "X", y = "Y", polygon_id = "ID"
+)
+st_crs(my.poly) = 27700
+plot(my.poly)
+
+my.poly$ID <- as.numeric(as.character(my.poly$ID))
+# make grid
+rp <- rasterize(my.poly, gr, "ID")
+head(rp)
+```
+
+```{r}
+# 2. read in rainfall, make into a spatial object and create a surface 
+r = rainfall_list[[70]]
+
+# make spatial and convert to OSGB projection
+r = r |>
+  st_as_sf(coords = c("long", "lat"), crs =4326) |>
+  st_transform(27700)
+
+r <- r[my.poly,]
+
+# view readings of the included stations
+tmap_mode("view")
+tm_shape(r) +
+  tm_dots("daily_rainfall", 
+              style="quantile", 
+              title="Daily Rainfall")
+```
+
+
+```{r}
+# 3. Build and fit the IDW model
+fit_drain <- gstat(id = "daily_rainfall", formula = daily_rainfall~1, data=r, set=list(idp = 2))
+
+interpolate_gstat <- function(model, x, crs, ...) {
+	v <- st_as_sf(x, coords=c("x", "y"), crs=crs)
+	p <- predict(model, v, ...)
+	as.data.frame(p)[,1:2]
+}
+
+drain_int <- interpolate(rp, fit_drain, debug.level=0, fun=interpolate_gstat, crs=crs(r), index=1)
+
+# Plot the results	
+ggplot(my.poly) + geom_sf() +
+	tidyterra::geom_spatraster(data = drain_int, aes(fill = daily_rainfall.pred)) + 
+	scale_fill_viridis_c() +
+	geom_sf(data = r)
+
+```
+
+## Iterate the IDW over the recorded days:
+```{r}
+for (i in 1:length(rainfall_list)){
+  r = rainfall_list[[i]]
+  # make spatial and convert to OSGB projection
+  r = r |>
+    st_as_sf(coords = c("long", "lat"), crs =4326) |>
+    st_transform(27700)
+  r <- r[my.poly,]
+  # 3. Build and fit the IDW model
+  fit_drain <- gstat(id = "daily_rainfall", formula = daily_rainfall~1, data=r, set=list(idp = 2))
+  
+  interpolate_gstat <- function(model, x, crs, ...) {
+    v <- st_as_sf(x, coords=c("x", "y"), crs=crs)
+    p <- predict(model, v, ...)
+    as.data.frame(p)[,1:2]
+}
+  drain_int <- interpolate(rp, fit_drain, debug.level=0, fun=interpolate_gstat, crs=crs(r), index=1)
+   # Save the results to a tif images with the date as a filename
+  output_file <- file.path(r"(2_processed_data\interpolated_rainfall)", paste0(as.character(names(rainfall_list[i])), ".tif"))
+  writeRaster(drain_int, output_file, overwrite = TRUE)
+}
+
+```
+
+
+
+# Calculate Antecedent Rainfall Index for all days
+
 
 
 ``` {r}
@@ -148,6 +261,7 @@ api <- calculateAPIList(df_list, rainfall_column, n)
 api[[1]]
 
 ```
+
 ```{r}
 api_daily <- bind_rows(api)
 
@@ -158,18 +272,9 @@ api_daily <- split(api_daily, f = api_daily$date)
 api_daily <- lapply(api_daily, function(df) df[, -1])
 names(api_daily)[40]
 ```
-## Convert 
+## Perform IDW
 ```{r}
-df_to_sf <- function(df) {
-  # Assuming 'long' and 'lat' are the columns containing coordinates
-  sf_df <- st_as_sf(df, coords = c("long", "lat"), crs = 4326)
-  sf_df <- st_transform(sf_df, crs = 27700)
-  return(sf_df)
-}
-
-# Apply the function to each data frame in the list
-api_sf <- lapply(api_daily, df_to_sf)
-api_sf[40]
 
 ```
+
 
