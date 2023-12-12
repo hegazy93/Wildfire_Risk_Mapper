@@ -39,7 +39,7 @@ head(stations)
 #Initial call - Remove if(FALSE){} to run
 
 if(FALSE){base_url <- 'https://environment.data.gov.uk/flood-monitoring/archive/readings-full-'
-range <- seq(as.Date("2023/08/19"), as.Date("2023/11/22"), by = "days")
+range <- seq(as.Date("2022/08/19"), as.Date("2023/11/22"), by = "days")
 out_url <- apply(expand.grid(base_url, range, ".csv"), 1, paste, collapse = '')
 
 rainfall_df <- readr::read_csv(out_url, col_select = c("stationReference","parameter", "value","date"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double())) %>%
@@ -58,7 +58,7 @@ head(rainfall_df)}
 
 ```{r , include=TRUE}
 base_url <- 'https://environment.data.gov.uk/flood-monitoring/archive/readings-full-'
-range <- seq(as.Date("2023/12/09"), as.Date("2023/12/10"), by = "days")
+range <- seq(as.Date("2022/12/11"), as.Date("2023/01/31"), by = "days")
 out_url <- apply(expand.grid(base_url, range, ".csv"), 1, paste, collapse = '')
 
 rainfall_df <- readr::read_csv(out_url, col_select = c("stationReference","parameter", "value","date"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double())) %>%
@@ -237,7 +237,7 @@ file_path <- r"(2_processed_data\interpolated_rainfall)"
  
 # Create and save raster stack
 rainfall_stack <- create_raster_stack(file_path)
-writeRaster(rainfall_stack, filename = r"(2_processed_data\daily_rainfall.tif)", format = "GTiff", overwrite=TRUE)
+writeRaster(rainfall_stack, filename = r"(2_processed_data\daily_rainfall.tif)", format = "GTiff", options = c("COMPRESS=LZW"), overwrite=TRUE)
 ```
 
 ```{r}
