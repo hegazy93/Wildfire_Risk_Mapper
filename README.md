@@ -1,6 +1,5 @@
 # Wildfire Risk Mapper
 
-## Project overview
 Wildfires are recognised as an increasing risk to natural ecosystems, property, and human lives. The objective of this project was to develop an online risk mapping tool to assist West Yorkshire Fire and Rescue Service (WYFRS).
 
 The tool was developed using a case study covering Marsden Moor in the Peak District by employing various topographic, meteorological, and geological factors that influence wildfire spread.
