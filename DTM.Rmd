@@ -15,27 +15,20 @@ knitr::opts_chunk$set(echo = TRUE)
 require(terra)
 require(sf)
 
-# Load the GeoJSON file as a 'sf' (simple features) object
-landcover <- st_read(r"(2_processed_data\landcover_MRSDNM.geojson)")
-bbox <- st_bbox(landcover)
-bbox_sf <- st_bbox(bbox, crs = st_crs(landcover))
-
 # Read the first raster to initialize the raster object
-dtm_1m <- rast(r"(C:\Users\abdel\OneDrive - University of Leeds\1_LIDA\01_Wildfire Risk Project\1_raw_data\DTM\DTM_1m_merged.tif)")
-
-# Crop the merged raster with the boundary
-mm_dtm_1m <- crop(dtm_1m, bbox_sf)
+dtm_1m <- rast(r"(1_raw_data\dtm_1m.tif)")
 
 # Display the merged raster
-plot(mm_dtm_1m)
+plot(dtm_1m)
 ```
+
 ```{r}
 # Calculate slope
-slope <- terrain(mm_dtm_1m, "slope")
+slope <- terrain(dtm_1m, "slope", neighbors=4, unit = "degrees")
 # Calculate aspect
-aspect <- terrain(mm_dtm_1m, "aspect")
+aspect <- terrain(dtm_1m, "aspect", neighbors=4, unit = "degrees")
 # Calculate drainage
-drainage <- terrain(mm_dtm_1m, "flowdir")
+drainage <- terrain(dtm_1m, "flowdir", neighbors=4, unit = "degrees")
 
 # Optionally, you can plot the results
 par(mfrow=c(1,3))
@@ -46,10 +39,10 @@ plot(drainage, main = "Drainage")
 
 ```{r}
 # Aggregate the raster to the target resolution (25m)
-mm_dtm_25m <- aggregate(mm_dtm_1m, fact = c(25,25))
+mm_dtm_25m <- aggregate(dtm_1m, fact = c(25,25))
 plot(mm_dtm_25m)
 par(mfrow=c(1,2))
-plot(mm_dtm_1m, main = "DTM 1 meter (Source)")
+plot(dtm_1m, main = "DTM 1 meter (Source)")
 plot(mm_dtm_25m, main = "DTM 25 meters (Aggregated)")
 
 writeRaster(mm_dtm_25m, (r"(2_processed_data\mm_dtm_25m.tif)"), overwrite = TRUE)
@@ -82,10 +75,12 @@ plot(aspect_resampled, main = "Aspect")
 plot(drainage_resampled, main = "Drainage")
 
 # Save the results
-writeRaster(slope_resampled, (r"(2_processed_data\mm_slope_25m_resampled.tif)"), overwrite = TRUE)
-writeRaster(aspect_resampled, (r"(2_processed_data\mm_aspect_25m_resampled.tif)"), overwrite = TRUE)
-writeRaster(drainage_resampled, (r"(2_processed_data\mm_drainage_25m_resampled.tif)"), overwrite = TRUE)
+writeRaster(slope_resampled, (r"(2_processed_data\mm_slope_25m_resampled_4.tif)"), overwrite = TRUE)
+writeRaster(aspect_resampled, (r"(2_processed_data\mm_aspect_25m_resampled_4.tif)"), overwrite = TRUE)
+writeRaster(drainage_resampled, (r"(2_processed_data\mm_drainage_25m_resampled_4.tif)"), overwrite = TRUE)
 
 ```
+
+
 
 

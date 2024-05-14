@@ -1,0 +1,379 @@
+---
+title: "Fire Propagator"
+author: "Abdelrahman Ibrahim"
+date: "2024-03-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Calculate slope components on all wind directions (i.e., fire spread directions)
+
+```{r}
+library(sf)
+library(data.table)
+library(tidyverse)
+library(terra)
+library(raster)
+
+slope_component <- function(slope_raster, aspect_raster, direction){
+  Ddiff <- aspect
+  Ddiff <- abs(aspect_raster-direction)
+  slope_direction <- slope
+  
+  slope_direction[Ddiff <= 90] <- slope_raster * cos(Ddiff * pi / 180)
+  slope_direction[(Ddiff > 90) & (Ddiff <= 180)] <- -slope_raster * cos((180 - Ddiff) * pi / 180)
+  slope_direction[(Ddiff > 180) & (Ddiff <= 270)] <- -slope_raster * cos((Ddiff - 180) * pi / 180)
+  slope_direction[Ddiff > 270] <- slope_raster * cos((360 - Ddiff) * pi / 180)
+  
+  return(slope_direction)
+}
+
+slope <- terra::rast(r"(2_processed_data\mm_slope_25m_resampled.tif)")
+aspect <- terra::rast(r"(2_processed_data\mm_aspect_25m_resampled.tif)")
+
+slope_N <- slope_component(slope, aspect, 0)
+slope_NE <- slope_component(slope, aspect, 45)
+slope_E <- slope_component(slope, aspect, 90)
+slope_SE <- slope_component(slope, aspect, 135)
+slope_S <- slope_component(slope, aspect, 180)
+slope_SW <- slope_component(slope, aspect, 225)
+slope_W <- slope_component(slope, aspect, 270)
+slope_NW <- slope_component(slope, aspect, 315)
+
+```
+
+# Calculate wind speed components on all fire spread directions
+
+```{r}
+
+wind_component <- function(wind_speed, wind_direction, direction, raster_temp){
+  if (wind_direction >= 180){
+    wind_head <- wind_direction - 180
+  } else{wind_head <- wind_direction + 180}
+  
+  Ddiff <- abs(wind_head-direction)
+  
+  if(Ddiff <= 90){
+    wind_component <- wind_speed * cos(Ddiff * (pi / 180))
+  } else if ((Ddiff > 90) & (Ddiff <= 180)) {
+    wind_component <- -wind_speed * cos((180 - Ddiff) * (pi / 180))
+  } else if ((Ddiff > 180) & (Ddiff <= 270)) {
+    wind_component <- -wind_speed * cos((Ddiff - 180) * (pi / 180))
+  } else { 
+    wind_component <- wind_speed * cos((360 - Ddiff) * (pi / 180))
+  }
+  
+  wind_component_r <- raster_temp
+  terra::values(wind_component_r) <- wind_component
+  
+  return(wind_component_r)
+}
+
+wind_speed <- (20*1.61*1000)/3600 #wind speed (meter/second)
+wind_direction <- 270
+
+wind_N <- wind_component(wind_speed, wind_direction, 0, slope)
+wind_NE <- wind_component(wind_speed, wind_direction, 45, slope)
+wind_E <- wind_component(wind_speed, wind_direction, 90, slope)
+wind_SE <- wind_component(wind_speed, wind_direction, 135, slope)
+wind_S <- wind_component(wind_speed, wind_direction, 180, slope)
+wind_SW <- wind_component(wind_speed, wind_direction, 225, slope)
+wind_W <- wind_component(wind_speed, wind_direction, 270, slope)
+wind_NW <- wind_component(wind_speed, wind_direction, 315, slope)
+
+```
+
+# Calculate slope and wind factors in all propagation directions
+```{r}
+
+slope_factor <- function(slope_component_r) {
+  slope_factor <- slope_component_r
+  slope_factor <- exp(3.533 * (tan(slope_component_r * (pi / 180))))
+  return(slope_factor)
+}
+
+wind_factor <- function(wind_component_r) {
+  wind_factor <- wind_component_r
+  wind_factor <- exp(0.1783 * wind_component_r)
+  return(wind_factor)
+}
+
+```
+
+```{r}
+#calculate fire spread rate components
+lc <- terra::rast(r"(2_processed_data\landcover_ac.tif)")
+
+est_speed <- lc
+est_speed[lc == 1] <- .017
+est_speed[lc ==5] <- .013
+est_speed[lc ==4] <- .006
+est_speed[lc == 6] <- .017
+est_speed[lc == 3] <- .006
+est_speed[lc == 2] <- .018
+est_speed[lc %in% c(7,8,9,10)] <- 0
+
+
+fmc_factor <- exp(-0.014 * 0.4) #fuel moisture content factor
+
+f_rate_N <- (est_speed * fmc_factor * slope_factor(slope_N) * wind_factor(wind_N))
+f_rate_NE <- (est_speed * fmc_factor * slope_factor(slope_NE) * wind_factor(wind_NE))
+f_rate_E <- (est_speed * fmc_factor * slope_factor(slope_E) * wind_factor(wind_E))
+f_rate_SE <- (est_speed * fmc_factor * slope_factor(slope_SE) * wind_factor(wind_SE))
+f_rate_S <- (est_speed * fmc_factor * slope_factor(slope_S) * wind_factor(wind_S))
+f_rate_SW <- (est_speed * fmc_factor * slope_factor(slope_SW) * wind_factor(wind_SW))
+f_rate_W <- (est_speed * fmc_factor * slope_factor(slope_W) * wind_factor(wind_W))
+f_rate_NW <- (est_speed * fmc_factor * slope_factor(slope_NW) * wind_factor(wind_NW))
+
+max_f_rate <- max(values(c(f_rate_N, f_rate_NE, f_rate_E, f_rate_SE, f_rate_S, f_rate_SW, f_rate_W, f_rate_NW)))
+max_f_rate
+```
+
+
+```{r}
+# Load required library
+library(terra)
+library(raster)
+
+# Create a raster object
+spread_time_quad <- slope
+
+# Define the threshold x and y coordinates
+threshold_x <- 404000 
+threshold_y <- 410000
+
+# Identify cells where x and y coordinates are greater than the thresholds
+q1 <- c(xmin = threshold_x, xmax = ext(spread_time_quad)[2], ymin = threshold_y , ymax = ext(spread_time_quad)[4])
+q2 <- c(xmin = threshold_x, xmax = ext(spread_time_quad)[2], ymin = ext(spread_time_quad)[3] , ymax = threshold_y)
+q3 <- c(xmin = ext(spread_time_quad)[1], xmax = threshold_x, ymin = ext(spread_time_quad)[3] , ymax = threshold_y)
+q4 <- c(xmin = ext(spread_time_quad)[1], xmax = threshold_x, ymin = threshold_y , ymax = ext(spread_time_quad)[4])
+
+
+spread_time_q1 <- crop(spread_time_quad, q1)
+spread_time_q2 <- crop(spread_time_quad, q2)
+spread_time_q3 <- crop(spread_time_quad, q3)
+spread_time_q4 <- crop(spread_time_quad, q4)
+
+```
+
+```{r}
+
+# Function to assign values to cells between N and NE directions
+N_NE <- function(raster) {
+  mat <- matrix(NA, nrow = nrow(raster), ncol = ncol(raster))
+  for (i in 1:nrow(raster)) {
+    for (j in 1:ncol(raster)) {
+      if (i + j <= nrow(raster) + 1) {
+        mat[i, j] <- 1
+      }
+    }
+  }
+  raster <- setValues(raster, mat)
+  return(raster)
+}
+
+# Function to assign values to cells between NE and E directions
+NE_E <- function(raster) {
+  mat <- matrix(NA, nrow = nrow(raster), ncol = ncol(raster))
+  for (i in 1:nrow(raster)) {
+    for (j in 1:ncol(raster)) {
+      if (i + j >= nrow(raster) + 1) {
+        mat[i, j] <- 2
+      }
+    }
+  }
+  raster <- setValues(raster, mat)
+  return(raster)
+}
+
+
+# Function to assign values to cells between E and SE directions
+E_SE <- function(raster) {
+  mat <- matrix(NA, nrow = nrow(raster), ncol = ncol(raster))
+  for (i in 1:nrow(raster)) {
+    for (j in 1:ncol(raster)) {
+      if (i <= j) {
+        mat[i, j] <- 3
+      }
+    }
+  }
+  raster <- setValues(raster, mat)
+  return(raster)
+}
+
+# Function to assign values to cells between SE and S directions
+SE_S <- function(raster) {
+  mat <- matrix(NA, nrow = nrow(raster), ncol = ncol(raster))
+  for (i in 1:nrow(raster)) {
+    for (j in 1:ncol(raster)) {
+      if (i >= j) {
+        mat[i, j] <- 4
+      }
+    }
+  }
+  raster <- setValues(raster, mat)
+  return(raster)
+}
+
+
+# Function to assign values to cells between S and SW directions
+S_SW <- function(raster) {
+  mat <- matrix(NA, nrow = nrow(raster), ncol = ncol(raster))
+  for (i in 1:nrow(raster)) {
+    for (j in 1:ncol(raster)) {
+      if (j >= ncol(raster) - i + 1) {
+        mat[i, j] <- 5
+      }
+    }
+  }
+  raster <- setValues(raster, mat)
+  return(raster)
+}
+
+# Function to assign values to cells between SW and W directions
+SW_W <- function(raster) {
+  mat <- matrix(NA, nrow = nrow(raster), ncol = ncol(raster))
+  for (i in 1:nrow(raster)) {
+    for (j in 1:ncol(raster)) {
+      if (j <= ncol(raster) - i + 1) {
+        mat[i, j] <- 6
+      }
+    }
+  }
+  raster <- setValues(raster, mat)
+  return(raster)
+}
+
+# Function to assign values to cells between W and NW directions
+W_NW <- function(raster) {
+  mat <- matrix(NA, nrow = nrow(raster), ncol = ncol(raster))
+  for (i in 1:nrow(raster)) {
+    for (j in 1:ncol(raster)) {
+      if ((i + j)<= ncol(raster) + 1) {
+        mat[i, j] <- 7
+      }
+    }
+  }
+  raster <- setValues(raster, mat)
+  raster <- flip(raster, direction = "vertical")
+  return(raster)
+}
+
+
+# Function to assign values to cells between NW and N directions
+NW_N <- function(raster) {
+  mat <- matrix(NA, nrow = nrow(raster), ncol = ncol(raster))
+  for (i in 1:nrow(raster)) {
+    for (j in 1:ncol(raster)) {
+      if ((i + j) >= ncol(raster) + 1) {
+        mat[i, j] <- 8
+      }
+    }
+  }
+  raster <- setValues(raster, mat)
+  raster <- flip(raster, direction = "vertical")
+  return(raster)
+}
+
+
+
+N_NE <- N_NE(spread_time_q1)
+NE_E <- NE_E(spread_time_q1)
+E_SE <- E_SE(spread_time_q2)
+SE_S <- SE_S(spread_time_q2)
+S_SW <- S_SW(spread_time_q3)
+SW_W <- SW_W(spread_time_q3)
+W_NW <- W_NW(spread_time_q4)
+NW_N <- NW_N(spread_time_q4)
+
+r <- mosaic(N_NE, NE_E, E_SE, SE_S, S_SW, SW_W, W_NW, NW_N, fun ="max")
+
+r[r == 1] <- mean(f_rate_N, f_rate_NE)
+r[r == 2] <- mean(f_rate_NE, f_rate_E)
+r[r == 3] <- mean(f_rate_E, f_rate_SE)
+r[r == 4] <- mean(f_rate_SE, f_rate_S)
+r[r == 5] <- mean(f_rate_S, f_rate_SW)
+r[r == 6] <- mean(f_rate_SW, f_rate_W)
+r[r == 7] <- mean(f_rate_W, f_rate_NW)
+r[r == 8] <- mean(f_rate_NW, f_rate_N)
+
+r[lc %in% c(7,8,9,10)] <- NA
+
+plot(r)
+
+```
+
+
+
+
+# Cost Surface Method
+
+```{r} 
+r <- raster::raster(r)
+raster::crs(r) <- "epsg:27700"
+
+# Calculate the transition matrix
+conduct <- gdistance::transition(r, function(x)mean(x), 8, symm=FALSE)
+conduct <- gdistance::geoCorrection(conduct, scl=FALSE)
+
+A <- c(404000,410000)
+
+
+cs <- data.table(ID=c("A"),
+                 x=c(A[[1]]),
+                 y=c(A[[2]]))
+
+
+ps <- st_as_sf(cs, coords = c("x", "y"), crs = 27700, agr = "constant")
+ps <- ps |> mutate(x=st_coordinates(ps)[[1]], y = st_coordinates(ps)[[2]])
+
+```
+
+
+
+```{r}
+csA <- gdistance::accCost(conduct, A)
+raster::crs(csA) <- "epsg:27700"
+csA <- csA/60
+csA_1hour <- csA
+csA_1hour[csA_1hour[] > 60] = NA
+csA_xhour <- csA
+csA_xhour[csA_xhour[] > 360] = NA
+
+```
+
+```{r}
+library(leaflet)
+
+ignition <- st_transform(ps, crs = 4326)
+ignition <- ignition |> mutate(x=st_coordinates(ignition)[[1]], y = st_coordinates(ignition)[[2]])
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'red',
+  library = 'ion',
+  markerColor = 'white'
+)
+
+
+pal = colorBin(palette = "viridis", values(csA_xhour), bins = c(0,60,120,180,240,300,360),
+                       na.color = "transparent", pretty = TRUE)
+
+
+output <- leaflet() |>
+  addProviderTiles(providers$Stadia.AlidadeSmooth) |>
+  setView(lng = -1.956, lat = 53.589, zoom = 13) |>
+  addRasterImage(x = csA_xhour, colors = pal, opacity = 0.7) |>
+  addLegend(pal = pal, 
+                  values = values(csA_xhour),
+                  title = "Wildfire Spread Time", position = "bottomleft") |>
+  addAwesomeMarkers(ignition$x, ignition$y, icon = icons) |>
+  addScaleBar(position = c("bottomright")) 
+
+output
+```
+
+

@@ -25,18 +25,51 @@ plot(mm_bound)
 
 ```{r , include=TRUE}
 landcover <- rast(r"(1_raw_data\landcover\landcover_25m_grid\data\LCM.tif)")[[1]] %>%
-  terra::crop(mm_bound, mask = FALSE) #load the first band of the raster
-plot(landcover, )
+  terra::crop(mm_bound)
+landcover
 ```
 
-```{r , include=TRUE}
-landcover_sf <- as.polygons(landcover, dissolve=FALSE) %>% #set dissolve to FALSE to keep all pixels as separate polygons
-  st_as_sf()
-landcover_sf <- cbind(ID = 1:nrow(landcover_sf), landcover_sf)
-head(landcover_sf)
+```{r}
+lc_ac <- terra::subst(landcover, 6:8, 5) |>
+  terra::subst(9:12, 6) |>
+  terra::subst(13, 7) |>
+  terra::subst(14, 8) |>
+  terra::subst(9:12, 6) |>
+  terra::subst(15:19, 9) |>
+  terra::subst(20:21, 10)
+
+plot(lc_ac)
+  
+  
 ```
+
 
 ```{r , include=TRUE}
 writeRaster(landcover, (r"(2_processed_data\landcover_MRSDNM.tif)"), overwrite = TRUE)
-st_write(landcover_sf, r"(2_processed_data\landcover_MRSDNM.geojson)", append = FALSE)
+
+writeRaster(lc_ac, (r"(2_processed_data\landcover_ac.tif)"), overwrite = TRUE)
+
 ```
+
+#Load and process soil wetness data
+```{r}
+
+# Load the soil data
+soil <- vect(r"(1_raw_data\Soil\wyfs_wetness\soil_wetness_processed.shp)")
+
+ref_raster <- landcover
+
+# Convert the shapefile to raster based on the sampling of the reference raster
+r1 <- terra::rasterize(soil, field="wet_score", ref_raster)
+r2 <- terra::rasterize(soil, field="runoff_con", ref_raster)
+
+soil_rast <- c(r1,r2)
+
+writeRaster(soil_rast, (r"(2_processed_data\soil_wetness.tif)"), overwrite = TRUE)
+
+
+
+
+plot(soil_rast[[2]])
+```
+

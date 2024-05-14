@@ -1,0 +1,47 @@
+********************************************************************
+
+EDINA DIGIMAP:
+
+DIGITAL DATA SUPPLY
+
+********************************************************************
+
+
+This data is distributed under licence by:
+
+    EDINA
+    University of Edinburgh
+    https://edina.ac.uk
+
+    Tel:    0131 650 3302
+    Fax:    0131 650 3308
+    Email:  digimap@ed.ac.uk
+		
+
+
+---------------------------------------------------------
+
+CONTENTS
+
+You will have received the data files listed below, each product and area has
+its own folder. Note that each data folder contains a conditions.txt file
+which states the conditions for use of the data within. These conditions can
+vary between different data products.
+
+
+
+-------------------------------------------------------------------------------
+Folder:           lcm-2021-vec_5353612
+Extent:           388393.0895340853, 394400.88726502424 - 428726.13295211527, 419221.7915095959
+Date Ordered:     16 January 2024 at 12:44:22
+Product:          Land Cover Map 2021
+Version:          2021
+Format:           FileGeoDatabase
+Theme:            N/A
+Area:             1001.1026085710719 square kilometres
+Chunks:
+ 
+Filename:         lcm-2021-vec_5353612/lcm-2021-vec_5353612.gdb
+Extent:           388393.0895340853, 394400.88726502424 - 428726.13295211527, 419221.7915095959
+Last Amended:     10 August 2022
+     

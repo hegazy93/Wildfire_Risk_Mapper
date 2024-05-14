@@ -17,7 +17,6 @@ require(jsonlite)
 require(sf)
 require(tidyverse)
 require(purrr)
-
 ```
 
 # Build a database of daily rainfall amounts across all rainfall stations
@@ -28,7 +27,7 @@ require(purrr)
 stations <- read_csv("http://environment.data.gov.uk/flood-monitoring/id/stations.csv", show_col_types = FALSE) |>
   filter(parameter == "rainfall") |>
   filter(stationReference != 'Not_Specified') |>
-  select(stationReference, lat, long)
+  dplyr::select(stationReference, lat, long)
 
 head(stations)
 ```
@@ -57,8 +56,8 @@ head(rainfall_df)}
 ## Update the rainfall data to the most recent recording
 
 ```{r , include=TRUE}
-base_url <- 'https://environment.data.gov.uk/flood-monitoring/archive/readings-full-'
-range <- seq(as.Date("2022/12/11"), as.Date("2023/01/31"), by = "days")
+ base_url <- 'https://environment.data.gov.uk/flood-monitoring/archive/readings-full-'
+range <- seq(as.Date("2024/03/12"), as.Date("2024/03/15"), by = "days")
 out_url <- apply(expand.grid(base_url, range, ".csv"), 1, paste, collapse = '')
 
 rainfall_df <- readr::read_csv(out_url, col_select = c("stationReference","parameter", "value","date"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double())) %>%
@@ -66,7 +65,7 @@ rainfall_df <- readr::read_csv(out_url, col_select = c("stationReference","param
   filter(stationReference != 'Not_Specified') %>%
   group_by(date, stationReference) %>%
   summarise(daily_rainfall = sum(value)) %>%
-  full_join(stations, by = c("stationReference")) %>%
+  full_join(stations, by = c("stationReference")) %>% 
   drop_na()
  
 head(rainfall_df)
@@ -77,7 +76,7 @@ head(rainfall_df)
 
 ```{r , include=TRUE}
 
-rainfall_hist <- readr::read_csv((r"(2_processed_data\EA_daily_rainfall_stations.csv)"), col_types = cols(stationReference = col_character(), date = col_date(), value =col_double()))
+rainfall_hist <- readr::read_csv((r"(2_processed_data\EA_daily_rainfall_stations.csv)"), col_types = cols(stationReference = col_character(), date = col_date(), daily_rainfall =col_double()))
 rainfall_master <- rbind(rainfall_hist, rainfall_df)
 rainfall_master <-  unique(rainfall_master)
 tail(rainfall_master)
@@ -200,7 +199,8 @@ for (i in 1:length(rainfall_list)){
 }
   drain_int <- interpolate(rp, fit_drain, debug.level=0, fun=interpolate_gstat, crs=crs(r), index=1)
    # Save the results to a tif images with the date as a filename
-  output_file <- file.path(r"(2_processed_data\interpolated_rainfall)", paste0(as.character(names(rainfall_list[i])), ".tif"))
+  output_file <- file.path(r"(2_processed_data\interpolated_rainfall)",
+                           paste0(as.character(names(rainfall_list[i])), ".tif"))
   writeRaster(drain_int, output_file, overwrite = TRUE)
 }
 
@@ -237,21 +237,43 @@ file_path <- r"(2_processed_data\interpolated_rainfall)"
  
 # Create and save raster stack
 rainfall_stack <- create_raster_stack(file_path)
-writeRaster(rainfall_stack, filename = r"(2_processed_data\daily_rainfall.tif)", format = "GTiff", options = c("COMPRESS=LZW"), overwrite=TRUE)
-```
+rainfall_stack <- rast(rainfall_stack)
 
-```{r}
-rainfall_stack[[22]]
+writeRaster(rainfall_stack, filename = r"(2_processed_data\daily_rainfall.tif)", filetype = "GTiff", overwrite=TRUE)
 ```
 
 
 # Calculate Antecedent Rainfall Index for all days
 
 ```{r}
+soil_moisture <- terra::rast(r"(2_processed_data\soil_wetness.tif)")[[2]]
+crs(rainfall_stack) <- crs(soil_moisture)
+ext(rainfall_stack) <- ext(soil_moisture)
+
+calculate_ari <- function(rainfall_raster,soil_raster) {
+  antecedent_rainfall <- terra::rast(ncols = ncol(rainfall_raster), nrows = nrow(rainfall_raster), 
+                                     crs =crs(rainfall_raster), extent = ext(rainfall_raster), 
+                                     nlyrs = nlyr(rainfall_raster))
+  for (i in 1:nlyr(rainfall_raster)){
+    start_index <- max(1, i - 10)
+    end_index <- i
+    cumulative_precipitation <- rainfall_raster[[1]]
+    values(cumulative_precipitation) <- 0
+    
+    for (j in start_index:end_index) {
+      contribution <- rainfall_raster[[j]] * soil_raster ^ (i - j)
+      cumulative_precipitation <- cumulative_precipitation + contribution
+      }
+    antecedent_rainfall[[i]] <- cumulative_precipitation
+    names(antecedent_rainfall[[i]]) <- names(rainfall_raster[[i]])
+  }
+  return(antecedent_rainfall)
+}
+
+antecedent_rainfall <- calculate_ari(rainfall_stack, soil_moisture)
+  
+plot(antecedent_rainfall[[30]])
+varnames(antecedent_rainfall)<- "ARI"
+writeRaster(antecedent_rainfall, filename = r"(2_processed_data\ari_runoff_10.tif)", filetype = "GTiff", overwrite=TRUE)
 
 ```
-
-
-
-
-

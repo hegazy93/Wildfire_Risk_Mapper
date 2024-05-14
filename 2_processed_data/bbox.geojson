@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "bbox",
+"features": [
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 399450.0, 406450.0 ], [ 399450.0, 414175.0 ], [ 407925.0, 414175.0 ], [ 407925.0, 406450.0 ], [ 399450.0, 406450.0 ] ] ] } },
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 399450.0, 406450.0 ], [ 399450.0, 414175.0 ], [ 407925.0, 414175.0 ], [ 407925.0, 406450.0 ], [ 399450.0, 406450.0 ] ] ] } },
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 399450.0, 406450.0 ], [ 399450.0, 414175.0 ], [ 407925.0, 414175.0 ], [ 407925.0, 406450.0 ], [ 399450.0, 406450.0 ] ] ] } }
+]
+}

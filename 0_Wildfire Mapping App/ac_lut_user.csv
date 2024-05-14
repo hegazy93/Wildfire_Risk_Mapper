@@ -1,0 +1,11 @@
+"name","code","fuel","priority"
+"Broadleaf woodland",1,3,5
+"Coniferous woodland",2,5,4
+"Arable",3,3,4
+"Improved grassland",4,4,4
+"Semi-natural grassland",5,2,4
+"Mountain, heath and bog",6,4,1
+"Saltwater",7,0,1
+"Freshwater",8,0,4
+"Coastal",9,0,2
+"Built-up areas and gardens",10,2,4

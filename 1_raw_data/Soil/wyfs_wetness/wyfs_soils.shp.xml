@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE metadata SYSTEM "http://www.fgdc.gov/metadata/fgdc-std-001-1998.dtd">
+<metadata>
+	<idinfo>
+		<citation>
+			<citeinfo>
+				<origin>National Soil Resources Institute</origin>
+				<pubdate>2001</pubdate>
+				<title>NATMAP vector</title>
+				<edition>2.0</edition>
+				<geoform>vector digital data</geoform>
+				<onlink>\\SILHOME2\PROJECTS\SSLRC_Projects\Land2000\DataExtractions\Extract02\LDE02_055\Clientfiles\NATMAPvector.mdb</onlink>
+				<ftname Sync="TRUE">NATMAPvector</ftname></citeinfo>
+		</citation>
+		<descript>
+			<abstract>NATMAP vector is a vector dataset and is the most detailed of four versions of the National Soil Map. is derived from the National Soil Map for England and Wales and is the product of sixty years of soil survey work in England and Wales.</abstract>
+			<purpose>The National Soil Map was published in 1983 after four years of intensive work by the field survey teams of the National Soil Resources Institute. It is the product of 'free' survey with an average of 2 to 3 soil observations per sq km outside  areas mapped during more detailed soil survey. A new improved version of the National Soil Map was introduced in 2001. It includes complete urban soil coverage and increased accuracy of line work.</purpose>
+			<langdata Sync="TRUE">en</langdata></descript>
+		<timeperd>
+			<timeinfo>
+				<sngdate>
+					<caldate>01/05/2001</caldate>
+				</sngdate>
+			</timeinfo>
+			<current>publication date</current>
+		</timeperd>
+		<status>
+			<progress>Complete</progress>
+			<update>Irregular</update>
+		</status>
+		<spdom>
+			<bounding>
+				<westbc>
+-7.098008</westbc>
+				<eastbc>
+2.097569</eastbc>
+				<northbc>
+55.833259</northbc>
+				<southbc>
+49.858951</southbc>
+			</bounding>
+			<lboundng><leftbc Sync="TRUE">79999.999987</leftbc><rightbc Sync="TRUE">657000.000018</rightbc><bottombc Sync="TRUE">4999.999775</bottombc><topbc Sync="TRUE">660000.000235</topbc></lboundng></spdom>
+		<keywords>
+			<theme>
+				<themekey>Soil</themekey>
+				<themekey>Agriculture/Farming</themekey>
+				<themekey>Earth Cover/Land Use</themekey>
+				<themekey>Environment</themekey>
+				<themekey>Geoscientific Information</themekey>
+			</theme>
+			<place>
+				<placekey>England and Wales</placekey>
+			</place>
+			<stratum>
+				<stratkey>Soil Surface</stratkey>
+			</stratum>
+		</keywords>
+		<accconst>Financial, Legal</accconst>
+		<useconst>The information contained in LandIS is copyright and its use is therefore subject to a specific licensing agreement between NSRI and the user. Depending on the status of the user, the cost can vary from a fully commercial charge for data lease to being royalty free with a small charge for extraction and preparation of the data to meet the user's needs.</useconst>
+		<ptcontac>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>National Soil Resources Institute</cntorg>
+					<cntper>Rodney Burton</cntper>
+				</cntorgp>
+				<cntpos>Senior Research Scientist</cntpos>
+				<cntvoice>+ 44 (0) 1525 863266</cntvoice>
+				<cntfax>+44 (0) 1525 863263</cntfax>
+				<cntemail>r.burton@cranfield.ac.uk</cntemail>
+			</cntinfo>
+		</ptcontac>
+		<native>Microsoft Windows 2000 Version 5.0 (Build 2195) Service Pack 2; ESRI ArcCatalog 8.1.1.649</native>
+		<crossref>
+			<citeinfo>
+				<origin>Soil Survey and Land Research Centre</origin>
+				<pubdate>1984</pubdate>
+				<title>Soils and their use in: Northern England; Wales; Midland and Western England; Eastern England; South West England; South East England;</title>
+				<serinfo>
+					<sername>Regional Bulletins</sername>
+				</serinfo>
+				<pubinfo>
+					<pubplace>Harpenden</pubplace>
+					<publish>Lawes Agricultural Trust (Soil Survey of England and Wales)</publish>
+				</pubinfo>
+			</citeinfo>
+		</crossref>
+		<natvform Sync="TRUE">Shapefile</natvform></idinfo>
+	<dataqual>
+		<lineage>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>M.G. Jarvis, R.H. Allen, S.J. Fordham, J. Hazelden, A.J. Moffat, R.G. Sturdy</origin>
+						<pubdate>1984</pubdate>
+						<title>Soils and their Use in South East England</title>
+						<serinfo>
+							<sername>Regional Bulletins</sername>
+							<issue>No. 15</issue>
+						</serinfo>
+						<pubinfo>
+							<pubplace>Harpenden</pubplace>
+							<publish>Soil Survey of England and Wales</publish>
+						</pubinfo>
+						<onlink>http://www.amazon.co.uk/exec/obidos/ASIN/0708402992/cranfieuniversso</onlink>
+					</citeinfo>
+				</srccite>
+				<srcscale>1:250,000</srcscale>
+				<typesrc>paper</typesrc>
+				<srccitea>M Jarvis et al 1984</srccitea>
+				<srccontr>Andy Moffat, Brian Matthews, Bill Corbett, Bill Whitfield, Bob Evans, Bob Furness, Bob Jones, Bob Palmer, Carl Bendelow, Colin Rudeforth, David Cope, David Hogan, Denis Robson, Derek Findlay, Dick Hartnup, Dick Seale, Dick Thompson, Dick Webster, Doug Carroll, Frank Heaven, Graham Beard, Graham Colbourne, Henry George, Iain Kilgour, Ian Bradley, John Allison, John Hazeldon, John Hollis, Malcolm Reeve, Mike Hodgson, Paul Wright, Robin Sturdy, Rodney Burton, Ron Allen, Roy Green, Steve Fordham, Steve King,  Steve Staines, Tim Harrod, Tony Hodge, Winston Lea</srccontr>
+			</srcinfo>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>Findlay, D.C., G.J.N. Colborne, D.W. Cope, T.R. Harrod, D.V. Hogan and S.J. Staines</origin>
+						<pubdate>1984</pubdate>
+						<title>Soils and their Use in South West England</title>
+						<serinfo>
+							<sername>Regional Bulletins</sername>
+							<issue>No. 14</issue>
+						</serinfo>
+						<pubinfo>
+							<pubplace>Harpenden</pubplace>
+							<publish>Soil Survey of England and Wales</publish>
+						</pubinfo>
+						<onlink>http://www.amazon.co.uk/exec/obidos/ASIN/0708402984/cranfieuniversso</onlink>
+					</citeinfo>
+				</srccite>
+				<srcscale>1:250000</srcscale>
+				<typesrc>paper</typesrc>
+				<srccitea>Findley et al, 1984</srccitea>
+				<srccontr>Andy Moffat, Brian Matthews, Bill Corbett, Bill Whitfield, Bob Evans, Bob Furness, Bob Jones, Bob Palmer, Carl Bendelow, Colin Rudeforth, David Cope, David Hogan, Denis Robson, Derek Findlay, Dick Hartnup, Dick Seale, Dick Thompson, Dick Webster, Doug Carroll, Frank Heaven, Graham Beard, Graham Colbourne, Henry George, Iain Kilgour, Ian Bradley, John Allison, John Hazeldon, John Hollis, Malcolm Reeve, Mike Hodgson, Paul Wright, Robin Sturdy, Rodney Burton, Ron Allen, Roy Green, Steve Fordham, Steve King,  Steve Staines, Tim Harrod, Tony Hodge, Winston Lea</srccontr>
+			</srcinfo>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>Jarvis, R.A., V.C. Bendelow, R.I. Bradey, D.M. Carroll, R.R. Furness, I.N.L. Kilgour and S.J. King</origin>
+						<pubdate>1984</pubdate>
+						<title>Soils and their use in Northern England</title>
+						<serinfo>
+							<sername>Regional Bulletins</sername>
+							<issue>No. 10</issue>
+						</serinfo>
+						<pubinfo>
+							<pubplace>Harpenden</pubplace>
+							<publish>Soil Survey of England and Wales</publish>
+						</pubinfo>
+						<onlink>http://www.amazon.co.uk/exec/obidos/ASIN/0708402941/cranfieuniversso</onlink>
+					</citeinfo>
+				</srccite>
+				<srcscale>1:250000</srcscale>
+				<typesrc>paper</typesrc>
+				<srccitea>R Jarvis et al 1984</srccitea>
+				<srccontr>Andy Moffat, Brian Matthews, Bill Corbett, Bill Whitfield, Bob Evans, Bob Furness, Bob Jones, Bob Palmer, Carl Bendelow, Colin Rudeforth, David Cope, David Hogan, Denis Robson, Derek Findlay, Dick Hartnup, Dick Seale, Dick Thompson, Dick Webster, Doug Carroll, Frank Heaven, Graham Beard, Graham Colbourne, Henry George, Iain Kilgour, Ian Bradley, John Allison, John Hazeldon, John Hollis, Malcolm Reeve, Mike Hodgson, Paul Wright, Robin Sturdy, Rodney Burton, Ron Allen, Roy Green, Steve Fordham, Steve King,  Steve Staines, Tim Harrod, Tony Hodge, Winston Lea</srccontr>
+			</srcinfo>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>Rudeforth, C. C., Hartnup, R., Lea, J. W., Thompson, T. R. E., and Wright, P. S.</origin>
+						<pubdate>1984</pubdate>
+						<title>Soils and their use in Wales</title>
+						<serinfo>
+							<sername>Regional Bulletins</sername>
+							<issue>No. 11</issue>
+						</serinfo>
+						<pubinfo>
+							<pubplace>Harpenden</pubplace>
+							<publish>Soil Survey of England and Wales</publish>
+						</pubinfo>
+						<onlink>http://www.amazon.co.uk/exec/obidos/ASIN/070840295X/cranfieuniversso</onlink>
+					</citeinfo>
+				</srccite>
+				<srcscale>1:250000</srcscale>
+				<typesrc>online</typesrc>
+				<srccitea>Rudeforth et al 1984</srccitea>
+				<srccontr>Andy Moffat, Brian Matthews, Bill Corbett, Bill Whitfield, Bob Evans, Bob Furness, Bob Jones, Bob Palmer, Carl Bendelow, Colin Rudeforth, David Cope, David Hogan, Denis Robson, Derek Findlay, Dick Hartnup, Dick Seale, Dick Thompson, Dick Webster, Doug Carroll, Frank Heaven, Graham Beard, Graham Colbourne, Henry George, Iain Kilgour, Ian Bradley, John Allison, John Hazeldon, John Hollis, Malcolm Reeve, Mike Hodgson, Paul Wright, Robin Sturdy, Rodney Burton, Ron Allen, Roy Green, Steve Fordham, Steve King,  Steve Staines, Tim Harrod, Tony Hodge, Winston Lea</srccontr>
+			</srcinfo>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>Ragg, J.M., G.R. Beard, H. George, F. W. Heaven, J.M. Hollis, R.J.A. Jones, R.C. Palmer, M.J. Reeve J.D. Robinson and W.A.D. Whitfield</origin>
+						<pubdate>1984</pubdate>
+						<title>Soils and their use in Midland and Western England</title>
+						<serinfo>
+							<sername>Regional Bulletin</sername>
+							<issue>No. 12</issue>
+						</serinfo>
+						<pubinfo>
+							<pubplace>Harpenden</pubplace>
+							<publish>Soil Survey of England and Wales</publish>
+						</pubinfo>
+						<onlink>http://www.amazon.co.uk/exec/obidos/ASIN/0708402968/cranfieuniversso</onlink>
+					</citeinfo>
+				</srccite>
+				<srcscale>1:250000</srcscale>
+				<typesrc>paper</typesrc>
+				<srccitea>Ragg et al 1984</srccitea>
+				<srccontr>Andy Moffat, Brian Matthews, Bill Corbett, Bill Whitfield, Bob Evans, Bob Furness, Bob Jones, Bob Palmer, Carl Bendelow, Colin Rudeforth, David Cope, David Hogan, Denis Robson, Derek Findlay, Dick Hartnup, Dick Seale, Dick Thompson, Dick Webster, Doug Carroll, Frank Heaven, Graham Beard, Graham Colbourne, Henry George, Iain Kilgour, Ian Bradley, John Allison, John Hazeldon, John Hollis, Malcolm Reeve, Mike Hodgson, Paul Wright, Robin Sturdy, Rodney Burton, Ron Allen, Roy Green, Steve Fordham, Steve King,  Steve Staines, Tim Harrod, Tony Hodge, Winston Lea</srccontr>
+			</srcinfo>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>Hodge, C.A.H., R.G.O. Burton, W.M. Corbett, R. Evans, and R.S. Seale</origin>
+						<pubdate>1984</pubdate>
+						<title>Soils and their use in Eastern England</title>
+						<serinfo>
+							<sername>Regional Bulletins</sername>
+							<issue>No. 13</issue>
+						</serinfo>
+						<pubinfo>
+							<pubplace>Harpenden</pubplace>
+							<publish>Soil Survey of England and Wales</publish>
+						</pubinfo>
+						<onlink>http://www.amazon.co.uk/exec/obidos/ASIN/0708402976/cranfieuniversso</onlink>
+					</citeinfo>
+				</srccite>
+				<srcscale>1:250000</srcscale>
+				<typesrc>paper</typesrc>
+				<srccitea>Hodge et al</srccitea>
+				<srccontr>Andy Moffat, Brian Matthews, Bill Corbett, Bill Whitfield, Bob Evans, Bob Furness, Bob Jones, Bob Palmer, Carl Bendelow, Colin Rudeforth, David Cope, David Hogan, Denis Robson, Derek Findlay, Dick Hartnup, Dick Seale, Dick Thompson, Dick Webster, Doug Carroll, Frank Heaven, Graham Beard, Graham Colbourne, Henry George, Iain Kilgour, Ian Bradley, John Allison, John Hazeldon, John Hollis, Malcolm Reeve, Mike Hodgson, Paul Wright, Robin Sturdy, Rodney Burton, Ron Allen, Roy Green, Steve Fordham, Steve King,  Steve Staines, Tim Harrod, Tony Hodge, Winston Lea</srccontr>
+			</srcinfo>
+		</lineage>
+	</dataqual>
+	<spdoinfo>
+		<direct>Vector</direct>
+		<ptvctinf><esriterm Name="wyfs_soils"><efeatyp Sync="TRUE">Simple</efeatyp><efeageom code="4" Sync="TRUE"></efeageom><esritopo Sync="TRUE">FALSE</esritopo><efeacnt Sync="TRUE">0</efeacnt><spindex Sync="TRUE">FALSE</spindex><linrefer Sync="TRUE">FALSE</linrefer></esriterm></ptvctinf></spdoinfo>
+	<spref>
+		<horizsys>
+			<planar>
+				<planci>
+					<plance>coordinate pair</plance>
+					<coordrep>
+						<absres>0.000652</absres>
+						<ordres>0.000652</ordres>
+					</coordrep>
+					<plandu>meters</plandu>
+				</planci>
+			</planar>
+			<geodetic>
+				<horizdn>D_OSGB_1936</horizdn>
+				<ellips>Airy_1830</ellips>
+				<semiaxis>6377563.396000</semiaxis>
+				<denflat>299.324965</denflat>
+			</geodetic>
+			<cordsysn><geogcsn Sync="TRUE">GCS_OSGB_1936</geogcsn><projcsn Sync="TRUE">British_National_Grid</projcsn></cordsysn></horizsys>
+		<vertdef>
+			<altsys>
+				<altres>1.000000</altres>
+				<altenc>Explicit elevation coordinate included with horizontal coordinates</altenc>
+			</altsys>
+		</vertdef>
+	</spref>
+	<eainfo>
+		<detailed Name="wyfs_soils">
+			<enttyp>
+				<enttypl>
+Natmap vector</enttypl>
+				<enttypd>1:250,000 scale Soil Map of England and Wales</enttypd>
+				<enttypt Sync="TRUE">Feature Class</enttypt><enttypc Sync="TRUE">0</enttypc></enttyp>
+			<attr><attrlabl Sync="TRUE">FID</attrlabl><attalias Sync="TRUE">FID</attalias><attrtype Sync="TRUE">OID</attrtype><attwidth Sync="TRUE">4</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Internal feature number.</attrdef><attrdefs Sync="TRUE">ESRI</attrdefs><attrdomv><udom Sync="TRUE">Sequential unique whole numbers that are automatically generated.</udom></attrdomv></attr><attr>
+				<attrlabl>OBJECTID</attrlabl>
+				<attrdef>Id column added to a table identified as an SDE GEODATABASE</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attrdomv>
+					<udom>Sequential unique whole numbers that are automatically generated.</udom>
+				</attrdomv>
+				<attalias Sync="TRUE">OBJECTID</attalias><attrtype Sync="TRUE">Integer</attrtype><attwidth Sync="TRUE">10</attwidth><atprecis Sync="TRUE">10</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr>
+				<attrlabl>SHAPE</attrlabl>
+				<attrdef>Feature geometry.</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attrdomv>
+					<udom>Coordinates defining the features.</udom>
+				</attrdomv>
+				<attalias Sync="TRUE">AREA</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr>
+				<attrlabl>AREA</attrlabl>
+				<attrdef>Area of feature in internal units squared.</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attalias Sync="TRUE">PERIMETER</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr>
+				<attrlabl>PERIMETER</attrlabl>
+				<attrdef>Length of feature in internal units.</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attalias Sync="TRUE">NATMAP_</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr>
+				<attrlabl>NATMAP_</attrlabl>
+				<attrdef>Feature ID number</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attalias Sync="TRUE">MAP_SYMBOL</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">8</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr>
+				<attrlabl>MAP_SYMBOL</attrlabl>
+				<attrdef>symbol appearing on the printed map the U before a mapunit refers to urban sites.</attrdef>
+				<attrdefs>NSRI</attrdefs>
+				<attalias Sync="TRUE">MUSID</attalias><attrtype Sync="TRUE">Integer</attrtype><attwidth Sync="TRUE">10</attwidth><atprecis Sync="TRUE">10</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr><attrlabl Sync="TRUE">MUSID</attrlabl><attalias Sync="TRUE">Shape</attalias><attrtype Sync="TRUE">Geometry</attrtype><attwidth Sync="TRUE">0</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Feature geometry.</attrdef><attrdefs Sync="TRUE">Esri</attrdefs><attrdomv><udom Sync="TRUE">Coordinates defining the features.</udom></attrdomv></attr><attr><attrlabl Sync="TRUE">Shape</attrlabl><attalias Sync="TRUE">LANDIS_NAT</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><attrdef Sync="TRUE">Feature geometry.</attrdef><attrdefs Sync="TRUE">ESRI</attrdefs><attrdomv><udom Sync="TRUE">Coordinates defining the features.</udom></attrdomv><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl Sync="TRUE">LANDIS_NAT</attrlabl><attalias Sync="TRUE">NATMAP_ID</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr>
+				<attrlabl>NATMAP_ID</attrlabl>
+				<attrdef>Feature ID number</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attalias Sync="TRUE">MAP_UNIT</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr>
+				<attrlabl>MAP_UNIT</attrlabl>
+				<attrdef>soil association code</attrdef>
+				<attrdefs>NSRI</attrdefs>
+				<attalias Sync="TRUE">UNSURVEYED</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">1</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr>
+				<attrlabl>SHAPE_Area</attrlabl>
+				<attrdef>Area of feature in internal units squared.</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attrdomv>
+					<udom>Positive real numbers that are automatically generated.</udom>
+				</attrdomv>
+				<attalias Sync="TRUE">SHAPE_AREA</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr><attrlabl Sync="TRUE">UNSURVEYED</attrlabl><attalias Sync="TRUE">SHAPE_LEN</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl Sync="TRUE">SHAPE_AREA</attrlabl><attalias Sync="TRUE">peat</attalias><attrtype Sync="TRUE">Integer</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">5</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Area of feature in internal units squared.</attrdef><attrdefs Sync="TRUE">ESRI</attrdefs><attrdomv><udom Sync="TRUE">Positive real numbers that are automatically generated.</udom></attrdomv></attr><attr><attrlabl Sync="TRUE">SHAPE_LEN</attrlabl><attalias Sync="TRUE">SHAPE_LEN</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">19</atprecis><attscale Sync="TRUE">0</attscale></attr></detailed>
+		<detailed>
+			<enttyp>
+				<enttypl>
+Legend</enttypl>
+			</enttyp>
+			<attr>
+			</attr>
+			<attr>
+			</attr>
+			<attr>
+			</attr>
+			<attr>
+				<atnumdec Sync="TRUE">3</atnumdec></attr>
+			<attr>
+				<atnumdec Sync="TRUE">3</atnumdec></attr>
+			<attr>
+			</attr>
+			<attr/><attr/></detailed>
+	</eainfo>
+	<distinfo>
+		<resdesc>Downloadable Data</resdesc>
+		<stdorder>
+			<digform>
+				<digtinfo>
+					<transize>4.121</transize>
+					<dssize Sync="TRUE">130.566</dssize></digtinfo>
+			</digform>
+		</stdorder>
+	</distinfo>
+	<metainfo>
+		<metd>20021118</metd>
+		<metc>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>NSRI, Cranfield University as Silsoe</cntorg>
+					<cntper>Timothy Farewell</cntper>
+				</cntorgp>
+				<cntpos>Geographical Information Coordinator</cntpos>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>National Soil Resources Centre</address>
+					<address>Cranfield University</address>
+					<city>Silsoe</city>
+					<state>Bedfordshire</state>
+					<postal>MK45 4DT</postal>
+					<country>England</country>
+				</cntaddr>
+				<cntvoice>+44 (0) 1525 863257</cntvoice>
+				<cntemail>nsridata@cranfield.ac.uk</cntemail>
+			</cntinfo>
+		</metc>
+		<metstdn>FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+		<metstdv>FGDC-STD-001-1998</metstdv>
+		<mettc>local time</mettc>
+		<metextns>
+			<onlink>http://www.esri.com/metadata/esriprof80.html</onlink>
+			<metprof>ESRI Metadata Profile</metprof>
+		</metextns>
+		<metextns>
+			<onlink>http://www.esri.com/metadata/esriprof80.html</onlink>
+			<metprof>ESRI Metadata Profile</metprof>
+		</metextns>
+		<langmeta Sync="TRUE">en</langmeta></metainfo>
+	<dataIdInfo><envirDesc Sync="TRUE"> Version 6.2 (Build 9200) ; Esri ArcGIS 10.6.0.8321</envirDesc><dataLang><languageCode Sync="TRUE" value="eng"></languageCode><countryCode value="GBR" Sync="TRUE"></countryCode></dataLang><idCitation><resTitle Sync="TRUE">wyfs_soils</resTitle><presForm><PresFormCd Sync="TRUE" value="005"></PresFormCd></presForm></idCitation><spatRpType><SpatRepTypCd Sync="TRUE" value="001"></SpatRepTypCd></spatRpType><dataExt><geoEle><GeoBndBox esriExtentType="native"><westBL Sync="TRUE">79999.999987</westBL><eastBL Sync="TRUE">657000.000018</eastBL><northBL Sync="TRUE">660000.000235</northBL><southBL Sync="TRUE">4999.999775</southBL><exTypeCode Sync="TRUE">1</exTypeCode></GeoBndBox></geoEle></dataExt><geoBox esriExtentType="decdegrees"><westBL Sync="TRUE">-7.098008</westBL><eastBL Sync="TRUE">2.097569</eastBL><northBL Sync="TRUE">55.833259</northBL><southBL Sync="TRUE">49.858951</southBL><exTypeCode Sync="TRUE">1</exTypeCode></geoBox></dataIdInfo><mdLang><languageCode Sync="TRUE" value="eng"></languageCode><countryCode value="GBR" Sync="TRUE"></countryCode></mdLang><mdStanName Sync="TRUE">ISO 19115 Geographic Information - Metadata</mdStanName><mdStanVer Sync="TRUE">DIS_ESRI1.0</mdStanVer><mdChar><CharSetCd Sync="TRUE" value="006"></CharSetCd></mdChar><mdHrLv><ScopeCd Sync="TRUE" value="005"></ScopeCd></mdHrLv><mdHrLvName Sync="TRUE">dataset</mdHrLvName><distInfo><distributor><distorTran><onLineSrc><orDesc Sync="TRUE">002</orDesc><linkage Sync="TRUE">file://\\Silhome2\Projects\SSLRC_Projects\GIS_Resources\Data\NATMAP\NATMAPvector\NATMAPvector.shp</linkage><protocol Sync="TRUE">Local Area Network</protocol></onLineSrc><transSize Sync="TRUE">130.566</transSize></distorTran><distorFormat><formatName Sync="TRUE">Shapefile</formatName></distorFormat></distributor><distFormat><formatName Sync="TRUE">Shapefile</formatName></distFormat><distTranOps><transSize Sync="TRUE">0.000</transSize></distTranOps></distInfo><refSysInfo><RefSystem><refSysID><identCode Sync="TRUE" code="27700">British_National_Grid</identCode><idCodeSpace Sync="TRUE">EPSG</idCodeSpace><idVersion Sync="TRUE">8.9.5(3.0.1)</idVersion></refSysID></RefSystem></refSysInfo><spatRepInfo><VectSpatRep><geometObjs Name="wyfs_soils"><geoObjTyp><GeoObjTypCd value="002" Sync="TRUE"></GeoObjTypCd></geoObjTyp><geoObjCnt Sync="TRUE">0</geoObjCnt></geometObjs><topLvl><TopoLevCd value="001" Sync="TRUE"></TopoLevCd></topLvl></VectSpatRep></spatRepInfo><Esri><SyncDate>20240214</SyncDate><SyncTime>18075000</SyncTime><ModDate>20240214</ModDate><ModTime>18075000</ModTime><DataProperties><lineage><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134241">CalculateField Soils\NATMAPvector MAP_UNIT 220 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134304">CalculateField Soils\NATMAPvector MAP_UNIT 341 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134323">CalculateField Soils\NATMAPvector MAP_UNIT 346 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134343">CalculateField Soils\NATMAPvector MAP_UNIT 361 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134403">CalculateField Soils\NATMAPvector MAP_UNIT 372 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134429">CalculateField Soils\NATMAPvector MAP_UNIT 431 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134453">CalculateField Soils\NATMAPvector MAP_UNIT 513 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134509">CalculateField Soils\NATMAPvector MAP_UNIT 521 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134534">CalculateField Soils\NATMAPvector MAP_UNIT 542 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134548">CalculateField Soils\NATMAPvector MAP_UNIT 543 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134604">CalculateField Soils\NATMAPvector MAP_UNIT 544 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134621">CalculateField Soils\NATMAPvector MAP_UNIT 555 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134657">CalculateField Soils\NATMAPvector MAP_UNIT 633 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134714">CalculateField Soils\NATMAPvector MAP_UNIT 634 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134735">CalculateField Soils\NATMAPvector MAP_UNIT 652 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134825">CalculateField Soils\NATMAPvector MAP_UNIT 832 VB #</Process><Process ToolSource="c:\arcgis1041\desktop10.4\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20170620" Time="134907">CalculateField Soils\NATMAPvector MAP_UNIT 873 VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.6\ArcToolbox\Toolboxes\Analysis Tools.tbx\Clip" Date="20240214" Time="180753">Clip NATMAPvector clip "K:\NATMAP\Spatial Soil Data\wyfs_soils.shp" #</Process></lineage><itemProps><itemName Sync="TRUE">wyfs_soils</itemName><imsContentType Sync="TRUE">002</imsContentType><itemSize Sync="TRUE">0.000</itemSize><itemLocation><linkage Sync="TRUE">file://\\DESKTOP-F60AVC5\K$\NATMAP\Spatial Soil Data\wyfs_soils.shp</linkage><protocol Sync="TRUE">Local Area Network</protocol></itemLocation></itemProps><coordRef><type Sync="TRUE">Projected</type><geogcsn Sync="TRUE">GCS_OSGB_1936</geogcsn><csUnits Sync="TRUE">Linear Unit: Meter (1.000000)</csUnits><projcsn Sync="TRUE">British_National_Grid</projcsn><peXml Sync="TRUE">&lt;ProjectedCoordinateSystem xsi:type='typens:ProjectedCoordinateSystem' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:typens='http://www.esri.com/schemas/ArcGIS/10.6'&gt;&lt;WKT&gt;PROJCS[&amp;quot;British_National_Grid&amp;quot;,GEOGCS[&amp;quot;GCS_OSGB_1936&amp;quot;,DATUM[&amp;quot;D_OSGB_1936&amp;quot;,SPHEROID[&amp;quot;Airy_1830&amp;quot;,6377563.396,299.3249646]],PRIMEM[&amp;quot;Greenwich&amp;quot;,0.0],UNIT[&amp;quot;Degree&amp;quot;,0.0174532925199433]],PROJECTION[&amp;quot;Transverse_Mercator&amp;quot;],PARAMETER[&amp;quot;False_Easting&amp;quot;,400000.0],PARAMETER[&amp;quot;False_Northing&amp;quot;,-100000.0],PARAMETER[&amp;quot;Central_Meridian&amp;quot;,-2.0],PARAMETER[&amp;quot;Scale_Factor&amp;quot;,0.9996012717],PARAMETER[&amp;quot;Latitude_Of_Origin&amp;quot;,49.0],UNIT[&amp;quot;Meter&amp;quot;,1.0],AUTHORITY[&amp;quot;EPSG&amp;quot;,27700]]&lt;/WKT&gt;&lt;XOrigin&gt;-5220400&lt;/XOrigin&gt;&lt;YOrigin&gt;-15524400&lt;/YOrigin&gt;&lt;XYScale&gt;450481592.76709664&lt;/XYScale&gt;&lt;ZOrigin&gt;-100000&lt;/ZOrigin&gt;&lt;ZScale&gt;10000&lt;/ZScale&gt;&lt;MOrigin&gt;-100000&lt;/MOrigin&gt;&lt;MScale&gt;10000&lt;/MScale&gt;&lt;XYTolerance&gt;0.001&lt;/XYTolerance&gt;&lt;ZTolerance&gt;0.001&lt;/ZTolerance&gt;&lt;MTolerance&gt;0.001&lt;/MTolerance&gt;&lt;HighPrecision&gt;true&lt;/HighPrecision&gt;&lt;WKID&gt;27700&lt;/WKID&gt;&lt;LatestWKID&gt;27700&lt;/LatestWKID&gt;&lt;/ProjectedCoordinateSystem&gt;</peXml></coordRef></DataProperties></Esri><mdDateSt Sync="TRUE">20240214</mdDateSt></metadata>
